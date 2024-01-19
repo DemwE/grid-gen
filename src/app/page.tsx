@@ -1,29 +1,12 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import GridGenerator from "@/components/GridGenerator";
 
 export default function Home() {
-  const [grid, setGrid] = useState<React.ReactElement[]>([]);
   const [cols, setCols] = useState(2);
   const [rows, setRows] = useState(4);
   const [minCols, maxCols]: number[] = [1, 64];
   const [minRows, maxRows]: number[] = [1, 512];
-
-  const generate = (cols: number, rows: number) => {
-    const amount = cols * rows;
-    const cells = Array.from({ length: amount }, (_, i) => (
-      <div key={i} className="bg-gray-200 p-4 rounded hover:bg-blue-400 transition-all ease-in grid place-items-center">{i + 1}</div>
-    ));
-    setGrid(cells);
-  }
-
-  useEffect(() => {
-    generate(cols, rows);
-  }, [cols, rows]);
-
-  const gridStyle = {
-    gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-    gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`
-  };
 
   return (
     <div className="h-dvh bg-zinc-50">
@@ -35,9 +18,7 @@ export default function Home() {
           <input type="number" id="rows" defaultValue={rows} className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" onChange={(e) => setRows(parseInt(e.target.value))} min={minRows} max={maxRows} />
         </div>
       </form>
-      <div className="grid gap-4 p-5" style={gridStyle}>
-        {grid}
-      </div>
+      <GridGenerator cols={cols} rows={rows}/>
     </div>
   );
 }
